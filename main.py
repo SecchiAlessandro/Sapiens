@@ -22,7 +22,7 @@ function_descriptions = [
                 },                                        
                 "summary": {
                     "type": "string",
-                    "description": "Try to summarize the content of the email"
+                    "description": "summarize in 10 words the body content of the email"
 
             },
             "required": ["companyName", "summary"]}
