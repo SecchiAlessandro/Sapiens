@@ -25,7 +25,7 @@ function_descriptions = [
                     "description": "Try to summarize the content of the email"
 
             },
-            "required": ["companyName", "summary"]
+            "required": ["companyName", "summary"]}
         }
     }
 ]
