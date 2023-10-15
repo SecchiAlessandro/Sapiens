@@ -20,57 +20,41 @@ function_descriptions = [
                     "type": "string",
                     "description": "the name of the company that sent the email"
                 },                                        
-                "product": {
+                "summary": {
                     "type": "string",
-                    "description": "Try to identify which product the client is interested in, if any"
-                },
-                "amount":{
-                    "type": "string",
-                    "description": "Try to identify the amount of products the client wants to purchase, if any"
-                },
-                "category": {
-                    "type": "string",
-                    "description": "Try to categorise this email into categories like those: 1. Sales 2. customer support; 3. consulting; 4. partnership; etc."
-                },
-                "nextStep":{
-                    "type": "string",
-                    "description": "What is the suggested next step to move this forward?"
-                },
-                "priority": {
-                    "type": "string",
-                    "description": "Try to give a priority score to this email based on how likely this email will leads to a good business opportunity, from 0 to 10; 10 most important"
-                },
+                    "description": "Try to summarize the content of the email"
+
             },
-            "required": ["companyName", "amount", "product", "priority", "category", "nextStep"]
+            "required": ["companyName", "summary"]
         }
     }
 ]
 
 
-email = """
-Dear Jason 
-I hope this message finds you well. I'm Shirley from Gucci;
-
-I'm looking to purchase some company T-shirt for my team, we are a team of 100k people, and we want to get 2 t-shirt per personl
-
-Please let me know the price and timeline you can work with;
-
-Looking forward
-
-Shirley Lou
-"""
-
-prompt = f"Please extract key information from this email: {email} "
-message = [{"role": "user", "content": prompt}]
-
-response = openai.ChatCompletion.create(
-    model="gpt-4-0613",
-    messages=message,
-    functions = function_descriptions,
-    function_call="auto"
-)
-
-print(response)
+# email = """
+# Dear Hitachi
+# I hope this message finds you well. I'm Tom from Terna;
+#
+# I'm looking to purchase some STATCOMs for my plant, we want to cover 200MVAR of power
+#
+# Please let me know the price and timeline and the number of STATCOMs you can sell;
+#
+# Looking forward
+#
+# Tom
+# """
+#
+# prompt = f"Please extract key information from this email: {email} "
+# message = [{"role": "user", "content": prompt}]
+#
+# response = openai.ChatCompletion.create(
+#     model="gpt-4-0613",
+#     messages=message,
+#     functions = function_descriptions,
+#     function_call="auto"
+# )
+#
+# print(response)
 
 
 
@@ -99,18 +83,11 @@ def analyse_email(email: Email):
 
     arguments = response.choices[0]["message"]["function_call"]["arguments"]
     companyName = eval(arguments).get("companyName")
-    priority = eval(arguments).get("priority")
-    product = eval(arguments).get("product")
-    amount = eval(arguments).get("amount")
-    category = eval(arguments).get("category")
-    nextStep = eval(arguments).get("nextStep")
+    summary = eval(arguments).get("summary")
+
 
     return {
         "companyName": companyName,
-        "product": product,
-        "amount": amount,
-        "priority": priority,
-        "category": category,
-        "nextStep": nextStep
+        "summary": summary
     }
 
